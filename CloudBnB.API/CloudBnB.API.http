@@ -1,0 +1,6 @@
+@CloudBnB.API_HostAddress = http://localhost:5252
+
+GET {{CloudBnB.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

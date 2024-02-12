@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/CloudBnB.API/bin/Debug/net8.0
+/CloudBnB.API/obj
+/CloudBnB.API/Properties/serviceDependencies.json
+/CloudBnB.API/Properties/serviceDependencies.local.json
+/CloudBnB.API/Properties/serviceDependencies.local.json.user
