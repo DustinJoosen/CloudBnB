@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CloudBnB.API.Data;
 using CloudBnB.API.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using CloudBnB.API.Services.Interfaces;
 
 namespace CloudBnB.API.Controllers
 {
@@ -15,22 +16,20 @@ namespace CloudBnB.API.Controllers
     [ApiController]
     public class LandlordsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ILandlordRepository _landlordRepos;
 
-        public LandlordsController(ApplicationDbContext context)
+        public LandlordsController(ILandlordRepository landlordRepos)
         {
-            _context = context;
+            this._landlordRepos = landlordRepos;
         }
 
         // GET: api/Landlords/GetAll
         [HttpGet]
+        [Route("")]
         [Route("GetAll")]
         public async Task<IActionResult> GetLandlords()
         {
-            var landlords = await this._context.Landlords
-                .Include(landlord => landlord.Avatar)
-                .ToListAsync();
-
+            var landlords = await this._landlordRepos.GetAll();
             return Ok(landlords);
         }
     }

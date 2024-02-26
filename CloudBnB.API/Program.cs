@@ -1,16 +1,33 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using CloudBnB.API.Data;
+using CloudBnB.API.Services.Repositories;
+using CloudBnB.API.Services;
+using CloudBnB.API.Models;
+using CloudBnB.API.Services.Interfaces;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CloudBnBAPIContext")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CloudBnBDbConn")));
 
-// Add services to the container.
+// Repositories.
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ILandlordRepository, LandlordRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Services.
+builder.Services.AddScoped<ISearchService, SearchService>();
+builder.Services.AddScoped<IImageService, ImgurService>();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
