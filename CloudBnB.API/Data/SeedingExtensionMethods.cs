@@ -67,6 +67,7 @@ namespace CloudBnB.API.Data
                 .RuleFor(location => location.Subtitle, f => f.Address.StreetName())
                 .RuleFor(location => location.Description, f => string.Join(" ", f.Lorem.Words(8)))
                 .RuleFor(location => location.LocationType, f => f.PickRandom<LocationType>())
+                .RuleFor(location => location.Features, f => (LocationFeature)f.Random.Number(1, 63))
                 .RuleFor(location => location.Rooms, f => f.Random.Number(1, 10))
                 .RuleFor(location => location.NumberOfGuests, f => f.Random.Number(1, 20))
                 .RuleFor(location => location.PricePerDay, f => f.Random.Double(99.99, 1495.99))
@@ -93,7 +94,5 @@ namespace CloudBnB.API.Data
 
             return modelBuilder;
         }
-
-
     }
 }

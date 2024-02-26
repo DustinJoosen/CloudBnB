@@ -14,6 +14,17 @@ namespace CloudBnB.API.Models
         House
     }
 
+    [Flags]
+    public enum LocationFeature
+    {
+        Smoking = 1,
+        PetsAllowed = 2,
+        Wifi = 4,
+        Tv = 8,
+        Bath = 16,
+        Breakfast = 32
+    }
+
     public class Location : IIdentifiable
     {
         public Location()
@@ -41,6 +52,9 @@ namespace CloudBnB.API.Models
 
         [Required, Range(0, int.MaxValue)]
         public int NumberOfGuests { get; set; }
+
+        [Required]
+        public LocationFeature Features { get; set; }
 
         [Required, Precision(2)]
         public double PricePerDay { get; set; }

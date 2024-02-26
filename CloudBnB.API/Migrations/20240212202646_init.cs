@@ -72,6 +72,7 @@ namespace CloudBnB.API.Migrations
                     Subtitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
                     LocationType = table.Column<int>(type: "int", nullable: false),
+                    Features = table.Column<int>(type: "int", nullable: false),
                     Rooms = table.Column<int>(type: "int", nullable: false),
                     NumberOfGuests = table.Column<int>(type: "int", nullable: false),
                     PricePerDay = table.Column<double>(type: "float(2)", precision: 2, nullable: false),
