@@ -17,22 +17,45 @@ namespace CloudBnB.API.Data
                 .RuleFor(customer => customer.FirstName, f => f.Person.FirstName)
                 .RuleFor(customer => customer.LastName, f => f.Person.LastName)
                 .RuleFor(customer => customer.Email, f => f.Person.Email)
-                .Generate(100));
+                .Generate(100));    
 
             return modelBuilder;
         }
 
         /// <summary>
-        /// Generates 100 images
+        /// Generates 60 images, both avatar's and location images
         /// </summary>
         /// <returns>The modelbuilder self, to allow method-chaining</returns>
         public static ModelBuilder GenerateImages(this ModelBuilder modelBuilder)
         {
+            int idx = 0;
+            // Generate avatars.
             modelBuilder.Entity<Image>().HasData(new Faker<Image>()
-                .RuleFor(image => image.Id, f => ++f.IndexVariable)
-                .RuleFor(image => image.Url, f => f.Image.PicsumUrl())
-                .RuleFor(image => image.IsCover, f => f.IndexVariable > 20)
-                .Generate(100));
+                .RuleFor(image => image.Id, f => ++idx)
+                .RuleFor(image => image.Url, f => f.Image.PicsumUrl(40, 40))
+                .RuleFor(image => image.IsCover, f => false)
+                .Generate(20));
+
+            // Generate location images.
+            modelBuilder.Entity<Image>().HasData(new Faker<Image>()
+                .RuleFor(image => image.Id, f => ++idx)
+                .RuleFor(image => image.Url, f => f.Image.PicsumUrl(300, 200))
+                .RuleFor(image => image.IsCover, f => true)
+                .Generate(40));
+
+            return modelBuilder;
+        }
+
+        /// <summary>
+        /// Generates 40 Location Images
+        /// </summary>
+        /// <returns>The modelbuilder self, to allow method-chaining</returns>
+        public static ModelBuilder GenerateLocationImages(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<LocationImage>().HasData(new Faker<LocationImage>()
+                .RuleFor(image => image.LocationId, f => ++f.IndexVariable)
+                .RuleFor(image => image.ImageId, f => f.IndexVariable + 20)
+                .Generate(40));
 
             return modelBuilder;
         }

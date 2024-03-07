@@ -16,6 +16,7 @@ namespace CloudBnB.API.Services.Repositories
         {
             return await this._context.Locations
                 .Include(location => location.Landlord)
+                    .ThenInclude(landlord => landlord.Avatar)
                 .Include(location => location.LocationImages)
                     .ThenInclude(locationImage => locationImage.Image)
                 .ToListAsync();

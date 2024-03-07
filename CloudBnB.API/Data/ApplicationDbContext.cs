@@ -40,6 +40,7 @@ namespace CloudBnB.API.Data
                 .GenerateImages()
                 .GenerateLandlords()
                 .GenerateLocations()
+                .GenerateLocationImages()
                 .GenerateReservations();
         }
     }

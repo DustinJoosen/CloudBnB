@@ -9,6 +9,8 @@ using CloudBnB.API.Data;
 using CloudBnB.API.Models;
 using CloudBnB.API.Services.Interfaces;
 using CloudBnB.API.Services;
+using CloudBnB.API.Dtos;
+using AutoMapper;
 
 namespace CloudBnB.API.Controllers
 {
@@ -19,13 +21,15 @@ namespace CloudBnB.API.Controllers
         private readonly ILocationRepository _locationRepos;
         private readonly ISearchService _searchService;
         private readonly IImageService _imageService;
+        private readonly IMapper _mapper;
 
         public LocationsController(ILocationRepository locationRepos, 
-            ISearchService searchService, IImageService imageService)
+            ISearchService searchService, IImageService imageService, IMapper mapper)
         {
             _locationRepos = locationRepos;
             _searchService = searchService;
             _imageService = imageService;
+            _mapper = mapper;
         }
 
         // GET: api/Locations/GetAll
@@ -35,7 +39,7 @@ namespace CloudBnB.API.Controllers
         public async Task<IActionResult> GetLocations()
         {
             var locations = await this._locationRepos.GetAll();
-            return Ok(locations);
+            return Ok(_mapper.Map<List<LocationDto>>(locations));  
         }
 
         [HttpGet]
@@ -61,7 +65,6 @@ namespace CloudBnB.API.Controllers
                 return BadRequest("Could not upload image");
 
             await _locationRepos.AddImage(locationId, uri);
-
             return Ok(uri);
         }
     }
