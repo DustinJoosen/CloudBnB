@@ -20,16 +20,18 @@ namespace CloudBnB.API.Controllers
 
         public LandlordsController(ILandlordRepository landlordRepos)
         {
-            this._landlordRepos = landlordRepos;
+            _landlordRepos = landlordRepos;
         }
 
-        // GET: api/Landlords/GetAll
+        /// <summary>
+        /// Returns a list of all landlords.
+        /// </summary>
         [HttpGet]
         [Route("")]
         [Route("GetAll")]
         public async Task<IActionResult> GetLandlords()
         {
-            var landlords = await this._landlordRepos.GetAll();
+            var landlords = await _landlordRepos.GetAll();
             return Ok(landlords);
         }
     }

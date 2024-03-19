@@ -11,10 +11,12 @@ using CloudBnB.API.Services.Interfaces;
 using CloudBnB.API.Services;
 using CloudBnB.API.Dtos;
 using AutoMapper;
+using Asp.Versioning;
 
 namespace CloudBnB.API.Controllers
 {
     [Route("api/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class LocationsController : ControllerBase
     {
@@ -23,7 +25,7 @@ namespace CloudBnB.API.Controllers
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
 
-        public LocationsController(ILocationRepository locationRepos, 
+        public LocationsController(ILocationRepository locationRepos,
             ISearchService searchService, IImageService imageService, IMapper mapper)
         {
             _locationRepos = locationRepos;
@@ -32,16 +34,23 @@ namespace CloudBnB.API.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Locations/GetAll
+        /// <summary>
+        /// Returns a list of all locations.
+        /// </summary>
         [HttpGet]
         [Route("")]
         [Route("GetAll")]
         public async Task<IActionResult> GetLocations()
         {
-            var locations = await this._locationRepos.GetAll();
-            return Ok(_mapper.Map<List<LocationDto>>(locations));  
+            var locations = await _locationRepos.GetAll();
+            return Ok(_mapper.Map<List<LocationDto>>(locations));
         }
 
+
+        /// <summary>
+        /// Searches for a specific location
+        /// </summary>
+        /// <param name="term">Name of the location to find</param>
         [HttpGet]
         [Route("Search")]
         public async Task<IActionResult> Search(string term)
@@ -53,6 +62,12 @@ namespace CloudBnB.API.Controllers
             return Ok(searched);
         }
 
+
+        /// <summary>
+        /// Uploads an image and links it to a location
+        /// </summary>
+        /// <param name="image">Image to be uploaded</param>
+        /// <param name="locationId">Location to link the image to</param>
         [HttpPost]
         [Route("Upload")]
         public async Task<IActionResult> Upload(IFormFile image, int locationId)

@@ -6,6 +6,9 @@ using CloudBnB.API.Services;
 using CloudBnB.API.Models;
 using CloudBnB.API.Services.Interfaces;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
+using Asp.Versioning;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,12 @@ builder.Services.AddScoped<IImageService, ImgurService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.AddApiVersioning(options => 
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ApiVersionReader = new QueryStringApiVersionReader("api-version");
+}).AddMvc();
+
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>
     {
@@ -31,7 +40,36 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.ResolveConflictingActions(apiDesc => apiDesc.First());
+    options.SwaggerDoc("v1", new OpenApiInfo 
+    { 
+        Title = "API V1", 
+        Version = "V1",
+        Description = "An API to manage CloudBnB",
+        Contact = new OpenApiContact
+        {
+            Name = "User interface",
+            Url = new Uri("https://cloudbnb-df3c1.web.app/")
+        }
+    });
+
+    options.SwaggerDoc("v2", new OpenApiInfo
+    {
+        Title = "API V2",
+        Version = "V2",
+        Description = "An API to manage CloudBnB",
+        Contact = new OpenApiContact
+        {
+            Name = "User interface",
+            Url = new Uri("https://cloudbnb-df3c1.web.app/")
+        }
+    });
+
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 builder.Services.AddCors(opt =>
 {
@@ -49,7 +87,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(config =>
+    {
+        config.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+        config.SwaggerEndpoint("/swagger/v2/swagger.json", "API v2");
+    });
 }
 
 app.UseHttpsRedirection();

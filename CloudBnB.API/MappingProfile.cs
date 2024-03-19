@@ -16,6 +16,14 @@ namespace CloudBnB.API
                     src.Landlord.Avatar.Url ?? _defaultImageUrl))
                 .ForMember(dest => dest.ImageURL, opt => opt.MapFrom(src =>
                     MapFirstLocationImage(src)));
+
+            CreateMap<Location, ExpandedLocationDto>()
+                .ForMember(dest => dest.LandlordAvatarURL, opt => opt.MapFrom(src =>
+                    src.Landlord.Avatar.Url ?? _defaultImageUrl))
+                .ForMember(dest => dest.ImageURL, opt => opt.MapFrom(src =>
+                    MapFirstLocationImage(src)))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.PricePerDay))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.LocationType));
         }
 
 
