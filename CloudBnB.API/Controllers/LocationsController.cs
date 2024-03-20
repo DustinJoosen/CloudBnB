@@ -46,25 +46,50 @@ namespace CloudBnB.API.Controllers
             return Ok(_mapper.Map<List<LocationDto>>(locations));
         }
 
-
         /// <summary>
-        /// Searches for a specific location
+        /// Returns the max price of any location.
         /// </summary>
-        /// <param name="term">Name of the location to find</param>
         [HttpGet]
-        [Route("Search")]
-        public async Task<IActionResult> Search(string term)
+        [Route("GetMaxPrice")]
+        public async Task<IActionResult> GetMaxPrice()
         {
-            if (term == null || string.IsNullOrWhiteSpace(term))
-                return BadRequest("Missing field 'term'.");
-
-            var searched = await _searchService.SearchLocations(term);
-            return Ok(searched);
+            var maxPrice = await _locationRepos.GetMaxPrice();
+            return Ok(new MaxPriceDto { Price = maxPrice });
+        }
+        
+        /// <summary>
+        /// Searches for specified locations.
+        /// </summary>
+        /// <param name="search">Search parameters</param>
+        [HttpPost]
+        [Route("Search")]
+        public async Task<IActionResult> Search([FromBody] SearchDto search)
+        {
+            var locations = await _searchService.Search(search);
+            return Ok(_mapper.Map<List<ExpandedLocationDto>>(locations));
         }
 
+        /// <summary>
+        /// Returns detailed info about a specified location.
+        /// </summary>
+        /// <param name="locationId">Id of the location to find</param>
+        [HttpGet]
+        [Route("GetDetails/{locationId:int}")]
+        public async Task<IActionResult> GetDetails(int? locationId)
+        {
+            if (locationId == null)
+                return NotFound();
+
+            var location = await this._locationRepos.Details((int)locationId);
+            if (location == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<DetailedLocationDto>(location));
+            
+        }
 
         /// <summary>
-        /// Uploads an image and links it to a location
+        /// Uploads an image and links it to a location.
         /// </summary>
         /// <param name="image">Image to be uploaded</param>
         /// <param name="locationId">Location to link the image to</param>

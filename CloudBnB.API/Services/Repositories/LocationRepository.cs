@@ -1,4 +1,5 @@
 ﻿using CloudBnB.API.Data;
+using CloudBnB.API.Dtos;
 using CloudBnB.API.Models;
 using CloudBnB.API.Repositories;
 using CloudBnB.API.Services.Interfaces;
@@ -22,13 +23,8 @@ namespace CloudBnB.API.Services.Repositories
                 .ToListAsync();
         }
 
-        public virtual async Task<List<Location>> Search(string term)
-        {
-            return await this._context.Locations
-                .Include(location => location.Landlord)
-                .Where(location => location.Title.ToLower().Contains(term))
-                .ToListAsync();
-        }
+        public virtual async Task<double> GetMaxPrice() =>
+            await this._context.Locations.MaxAsync(location => location.PricePerDay);
 
         public async Task AddImage(int locationId, string uri)
         {
@@ -49,6 +45,21 @@ namespace CloudBnB.API.Services.Repositories
                 LocationId = locationId
             });
             await this._context.SaveChangesAsync();
+        }
+
+        public async Task<Location?> Details(int locationId)
+        {
+            var location = await this._context.Locations
+                .Include(location => location.LocationImages)
+                    .ThenInclude(locationImage => locationImage.Image)
+                .Include(location => location.Landlord)
+                    .ThenInclude(landlord => landlord.Avatar)
+                .SingleOrDefaultAsync(location => location.Id == locationId);
+
+            if (location == null)
+                return null;
+
+            return location;
         }
     }
 }

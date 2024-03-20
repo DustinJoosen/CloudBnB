@@ -12,10 +12,16 @@ namespace CloudBnB.API.Services.Interfaces
         public Task AddImage(int locationId, string uri);
 
         /// <summary>
-        /// Searches the title of each location for the term.
+        /// Returns the maximum price of any location currently stored in the datbase.
         /// </summary>
-        /// <param name="term">Term to be checked. It will be parsed</param>
-        /// <returns>A list of locations that match the term.</returns>
-        public Task<List<Location>> Search(string term);
+        /// <returns>Double maximum price</returns>
+        public Task<double> GetMaxPrice();
+
+        /// <summary>
+        /// Gets the details of a particular location
+        /// </summary>
+        /// <param name="locationId">location to find</param>
+        /// <returns></returns>
+        public Task<Location?> Details(int locationId);
     }
 }
