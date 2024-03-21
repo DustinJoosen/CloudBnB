@@ -4,6 +4,7 @@ using CloudBnB.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CloudBnB.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240318193237_Population")]
+    partial class Population
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +49,7 @@ namespace CloudBnB.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
 
                     b.HasData(
                         new
@@ -768,7 +771,7 @@ namespace CloudBnB.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
 
                     b.HasData(
                         new
@@ -1401,7 +1404,7 @@ namespace CloudBnB.API.Migrations
 
                     b.HasIndex("AvatarId");
 
-                    b.ToTable("Landlords", (string)null);
+                    b.ToTable("Landlords");
 
                     b.HasData(
                         new
@@ -1610,7 +1613,7 @@ namespace CloudBnB.API.Migrations
 
                     b.HasIndex("LandlordId");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
 
                     b.HasData(
                         new
@@ -2147,7 +2150,7 @@ namespace CloudBnB.API.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("LocationImages", (string)null);
+                    b.ToTable("LocationImages");
 
                     b.HasData(
                         new
@@ -2582,7 +2585,7 @@ namespace CloudBnB.API.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Reservations", (string)null);
+                    b.ToTable("Reservations");
 
                     b.HasData(
                         new

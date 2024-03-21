@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using CloudBnB.API.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace CloudBnB.API.Data
@@ -17,13 +18,13 @@ namespace CloudBnB.API.Data
                 .RuleFor(customer => customer.FirstName, f => f.Person.FirstName)
                 .RuleFor(customer => customer.LastName, f => f.Person.LastName)
                 .RuleFor(customer => customer.Email, f => f.Person.Email)
-                .Generate(100));    
+                .Generate(100));
 
             return modelBuilder;
         }
 
         /// <summary>
-        /// Generates 60 images, both avatar's and location images
+        /// Generates 100 images, both avatar's and location images
         /// </summary>
         /// <returns>The modelbuilder self, to allow method-chaining</returns>
         public static ModelBuilder GenerateImages(this ModelBuilder modelBuilder)
@@ -40,8 +41,8 @@ namespace CloudBnB.API.Data
             modelBuilder.Entity<Image>().HasData(new Faker<Image>()
                 .RuleFor(image => image.Id, f => ++idx)
                 .RuleFor(image => image.Url, f => f.Image.PicsumUrl(300, 200))
-                .RuleFor(image => image.IsCover, f => true)
-                .Generate(40));
+                .RuleFor(image => image.IsCover, f => idx % 2 == 1)
+                .Generate(80));
 
             return modelBuilder;
         }
@@ -53,9 +54,9 @@ namespace CloudBnB.API.Data
         public static ModelBuilder GenerateLocationImages(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<LocationImage>().HasData(new Faker<LocationImage>()
-                .RuleFor(image => image.LocationId, f => ++f.IndexVariable)
+                .RuleFor(image => image.LocationId, f => ++f.IndexVariable / 2)
                 .RuleFor(image => image.ImageId, f => f.IndexVariable + 20)
-                .Generate(40));
+                .Generate(80));
 
             return modelBuilder;
         }
@@ -92,14 +93,14 @@ namespace CloudBnB.API.Data
                 .RuleFor(location => location.LocationType, f => f.PickRandom<LocationType>())
                 .RuleFor(location => location.Features, f => (LocationFeature)f.Random.Number(1, 63))
                 .RuleFor(location => location.Rooms, f => f.Random.Number(1, 10))
+                .RuleFor(location => location.PricePerDay, f => f.Random.Double(99.99, 1499.99))
                 .RuleFor(location => location.NumberOfGuests, f => f.Random.Number(1, 20))
-                .RuleFor(location => location.PricePerDay, f => f.Random.Double(99.99, 1495.99))
                 .RuleFor(location => location.LandlordId, (f, e) => (e.Id + 1) / 2)
                 .Generate(40));
 
             return modelBuilder;
         }
-        
+
         /// <summary>
         /// Generates 120 reservations
         /// </summary>

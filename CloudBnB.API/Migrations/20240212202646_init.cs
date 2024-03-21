@@ -62,6 +62,7 @@ namespace CloudBnB.API.Migrations
                         onDelete: ReferentialAction.NoAction);
                 });
 
+
             migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
