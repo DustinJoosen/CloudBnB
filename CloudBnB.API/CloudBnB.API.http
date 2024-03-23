@@ -1,11 +1,37 @@
 @CloudBnB.API_HostAddress = http://localhost:5252
 
 
-### Landlords GetAll
+### Landlords
 GET {{CloudBnB.API_HostAddress}}/api/Landlords/GetAll/
 Accept: application/json
 
 
-### Locations GetAll
+### Locations
 GET {{CloudBnB.API_HostAddress}}/api/Locations/GetAll
 Accept: application/json
+
+### Locations/GetMaxPrice
+GET https://localhost:7279/api/Locations/GetMaxPrice
+Accept: */*
+
+### Locations/GetDetails/1
+GET https://localhost:7279/api/Locations/GetDetails/1
+Accept: */*
+
+### Locations/UnAvailableDates/1
+GET https://localhost:7279/api/Locations/UnAvailableDates/1
+Accept: */*
+
+### Locations/Search
+POST https://localhost:7279/api/Locations/Search
+Accept: */*
+Content-Type: application/json
+
+{
+  "features": null,
+  "type": null,
+  "rooms": 5,
+  "minPrice": null,
+  "maxPrice": 1000
+}
+

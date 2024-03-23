@@ -38,14 +38,13 @@ namespace CloudBnB.API.Services.Repositories
                 Url = uri
             }).Entity;
 
-            await this._context.SaveChangesAsync();
-         
             // Save LocationImage.
             this._context.LocationImages.Add(new LocationImage
             {
-                ImageId = image.Id,
+                Image = image,
                 LocationId = locationId
             });
+
             await this._context.SaveChangesAsync();
         }
 
