@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using Asp.Versioning;
 using System.Reflection;
+using CloudBnB.API.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,46 +33,21 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddApiVersioning(options => 
 {
     options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
     options.ApiVersionReader = new QueryStringApiVersionReader("api-version");
 }).AddMvc();
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+{
+    options.Conventions.Add(new ApiVersionBasedGroupingConvention());
+})
     .AddJsonOptions(opt =>
     {
         opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.ResolveConflictingActions(apiDesc => apiDesc.First());
-    options.SwaggerDoc("v1", new OpenApiInfo 
-    { 
-        Title = "API V1", 
-        Version = "V1",
-        Description = "An API to manage CloudBnB",
-        Contact = new OpenApiContact
-        {
-            Name = "User interface",
-            Url = new Uri("https://cloudbnb-df3c1.web.app/")
-        }
-    });
-
-    options.SwaggerDoc("v2", new OpenApiInfo
-    {
-        Title = "API V2",
-        Version = "V2",
-        Description = "An API to manage CloudBnB",
-        Contact = new OpenApiContact
-        {
-            Name = "User interface",
-            Url = new Uri("https://cloudbnb-df3c1.web.app/")
-        }
-    });
-
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-});
+builder.Services.AddSwaggerGeneration();
 
 builder.Services.AddCors(opt =>
 {

@@ -17,6 +17,7 @@ namespace CloudBnB.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "v1")]
     [ApiController]
     public class LocationsController : ControllerBase
     {

@@ -15,8 +15,9 @@ using Asp.Versioning;
 
 namespace CloudBnB.API.Controllers.V2
 {
-    [Route("api/locations")]
+    [Route("api/Locations")]
     [ApiVersion("2.0")]
+    [ApiExplorerSettings(GroupName = "v2")]
     [ApiController]
     public class LocationsController : ControllerBase
     {
