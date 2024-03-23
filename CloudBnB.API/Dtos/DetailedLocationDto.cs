@@ -2,7 +2,6 @@
 
 namespace CloudBnB.API.Dtos
 {
-
     public class DetailedLocationDto
     {
         public string Title { get; set; }
@@ -15,5 +14,17 @@ namespace CloudBnB.API.Dtos
         public int Features { get; set; }
         public List<ImageDto> Images { get; set; }
         public LandlordDto Landlord { get; set; }
+    }
+
+    public class ImageDto
+    {
+        public string URL { get; set; }
+        public bool IsCover { get; set; }
+    }
+
+    public class LandlordDto
+    {
+        public string Name { get; set; }
+        public string Avatar { get; set; }
     }
 }

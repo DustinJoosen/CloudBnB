@@ -19,15 +19,15 @@
         /// Create entity
         /// </summary>
         /// <param name="entity">Entity to be created</param>
-        /// <returns>Boolean determining success</returns>
-        public Task<bool> Create(T entity);
+        /// <returns>Given entity</returns>
+        public Task<T> Create(T entity);
 
         /// <summary>
         /// Updates entity
         /// </summary>
         /// <param name="entity">Entity to be updated</param>
-        /// <returns>Boolean determining success</returns>
-        public Task<bool> Update(T entity);
+        /// <returns>Given entity</returns>
+        public Task<T> Update(T entity);
 
         /// <summary>
         /// Deletes an entity

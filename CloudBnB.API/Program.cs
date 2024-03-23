@@ -19,11 +19,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ILandlordRepository, LandlordRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
 // Services.
 builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<IImageService, ImgurService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

@@ -21,7 +21,14 @@ namespace CloudBnB.API.Services.Interfaces
         /// Gets the details of a particular location
         /// </summary>
         /// <param name="locationId">location to find</param>
-        /// <returns></returns>
+        /// <returns>Model of found location</returns>
         public Task<Location?> Details(int locationId);
+
+        /// <summary>
+        /// Gets a list of all unavailable dates for a specific location
+        /// </summary>
+        /// <param name="locationId">Id of location to check</param>
+        /// <returns>List of DateTime's</returns>
+        public Task<List<DateTime>> UnavailableDates(int locationId);
     }
 }

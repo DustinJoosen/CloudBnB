@@ -28,20 +28,20 @@ namespace CloudBnB.API.Repositories
             return entities;
         }
 
-        public virtual async Task<bool> Create(T entity)
+        public virtual async Task<T> Create(T entity)
         {
             this._set.Add(entity);
-            int changed = await this._context.SaveChangesAsync();
+            await this._context.SaveChangesAsync();
 
-            return changed == 1;
+            return entity;
         }
 
-        public virtual async Task<bool> Update(T entity)
+        public virtual async Task<T> Update(T entity)
         {
             this._set.Update(entity);
-            int changed = await this._context.SaveChangesAsync();
+            await this._context.SaveChangesAsync();
 
-            return changed == 1;
+            return entity;
         }
 
         public virtual async Task<bool> Delete(int id)

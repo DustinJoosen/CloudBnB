@@ -26,16 +26,15 @@ namespace CloudBnB.API.Services.Repositories
         public virtual async Task<double> GetMaxPrice() =>
             await this._context.Locations.MaxAsync(location => location.PricePerDay);
 
-        public async Task AddImage(int locationId, string uri)
+        public virtual async Task AddImage(int locationId, string uri)
         {
-            var image = new Image
+            // Save image.
+            var image = this._context.Images.Add(new Image
             {
                 IsCover = false,
                 Url = uri
-            };
+            }).Entity;
 
-            // Save image.
-            this._context.Images.Add(image);
             await this._context.SaveChangesAsync();
          
             // Save LocationImage.
@@ -47,7 +46,7 @@ namespace CloudBnB.API.Services.Repositories
             await this._context.SaveChangesAsync();
         }
 
-        public async Task<Location?> Details(int locationId)
+        public virtual async Task<Location?> Details(int locationId)
         {
             var location = await this._context.Locations
                 .Include(location => location.LocationImages)
@@ -60,6 +59,29 @@ namespace CloudBnB.API.Services.Repositories
                 return null;
 
             return location;
+        }
+
+        public virtual async Task<List<DateTime>> UnavailableDates(int locationId)
+        {
+            var reservations = await _context.Reservations
+                .Where(reservation => reservation.LocationId == locationId)
+                .ToListAsync();
+
+            List<DateTime> unavailableDates = [];
+
+            foreach (var reservation in reservations)
+            {
+                // Safety check to ensure the reservation doesn't end before it's started.
+                if (reservation.EndDate < reservation.StartDate)
+                    continue;
+
+                var range = reservation.EndDate - reservation.StartDate;
+                unavailableDates.AddRange(Enumerable.Range(0, range.Days + 1)
+                    .Select(offset => reservation.StartDate.AddDays(offset))
+                    .Where(date => date >= DateTime.UtcNow));
+            }
+
+            return unavailableDates;
         }
     }
 }

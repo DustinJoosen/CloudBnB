@@ -75,7 +75,7 @@ namespace CloudBnB.API.Controllers
         /// <param name="locationId">Id of the location to find</param>
         [HttpGet]
         [Route("GetDetails/{locationId:int}")]
-        public async Task<IActionResult> GetDetails(int? locationId)
+        public async Task<IActionResult> GetDetails([FromRoute]int? locationId)
         {
             if (locationId == null)
                 return NotFound();
@@ -86,6 +86,25 @@ namespace CloudBnB.API.Controllers
 
             return Ok(_mapper.Map<DetailedLocationDto>(location));
             
+        }
+
+        /// <summary>
+        /// Returns a list of all unavailable dates for a specific location
+        /// </summary>
+        /// <param name="locationId">Id of location to check</param>
+        [HttpGet]
+        [Route("UnAvailableDates/{locationId:int}")]
+        public async Task<IActionResult> UnavailableDates([FromRoute]int? locationId)
+        {
+            if (locationId == null)
+                return NotFound();
+
+            var unavailableDates = await this._locationRepos.UnavailableDates((int)locationId);
+
+            return Ok(new UnavailableDatesDto
+            {
+                UnAvailableDates = unavailableDates
+            });
         }
 
         /// <summary>
