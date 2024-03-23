@@ -23,8 +23,11 @@ namespace CloudBnB.API.Services.Repositories
                 .ToListAsync();
         }
 
-        public virtual async Task<double> GetMaxPrice() =>
-            await this._context.Locations.MaxAsync(location => location.PricePerDay);
+        public virtual async Task<double> GetMaxPrice()
+        {
+            var price = await this._context.Locations.MaxAsync(location => location.PricePerDay);
+            return double.Round(price, 2);
+        }
 
         public virtual async Task AddImage(int locationId, string uri)
         {
