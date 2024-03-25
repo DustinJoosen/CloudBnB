@@ -33,11 +33,12 @@ namespace CloudBnB.API.Controllers.V2
         /// <summary>
         /// Returns a list of all locations.
         /// </summary>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetLocations()
+        public async Task<IActionResult> GetLocations(CancellationToken cancellationToken)
         {
-            var locations = await this._locationRepos.GetAll();
+            var locations = await this._locationRepos.GetAll(cancellationToken);
             return Ok(_mapper.Map<List<ExpandedLocationDto>>(locations));
         }
     }

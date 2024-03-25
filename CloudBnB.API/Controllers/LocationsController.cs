@@ -38,35 +38,38 @@ namespace CloudBnB.API.Controllers
         /// <summary>
         /// Returns a list of all locations.
         /// </summary>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpGet]
         [Route("")]
         [Route("GetAll")]
-        public async Task<IActionResult> GetLocations()
+        public async Task<IActionResult> GetLocations(CancellationToken cancellationToken)
         {
-            var locations = await _locationRepos.GetAll();
+            var locations = await _locationRepos.GetAll(cancellationToken);
             return Ok(_mapper.Map<List<LocationDto>>(locations));
         }
 
         /// <summary>
         /// Returns the max price of any location.
         /// </summary>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpGet]
         [Route("GetMaxPrice")]
-        public async Task<IActionResult> GetMaxPrice()
+        public async Task<IActionResult> GetMaxPrice(CancellationToken cancellationToken)
         {
-            var maxPrice = await _locationRepos.GetMaxPrice();
+            var maxPrice = await _locationRepos.GetMaxPrice(cancellationToken);
             return Ok(new MaxPriceDto { Price = maxPrice });
         }
-        
+
         /// <summary>
         /// Searches for specified locations.
         /// </summary>
         /// <param name="search">Search parameters</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpPost]
         [Route("Search")]
-        public async Task<IActionResult> Search([FromBody] SearchDto search)
+        public async Task<IActionResult> Search([FromBody] SearchDto search, CancellationToken cancellationToken)
         {
-            var locations = await _searchService.Search(search);
+            var locations = await _searchService.Search(search, cancellationToken);
             return Ok(_mapper.Map<List<ExpandedLocationDto>>(locations));
         }
 
@@ -74,14 +77,15 @@ namespace CloudBnB.API.Controllers
         /// Returns detailed info about a specified location.
         /// </summary>
         /// <param name="locationId">Id of the location to find</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpGet]
         [Route("GetDetails/{locationId:int}")]
-        public async Task<IActionResult> GetDetails([FromRoute]int? locationId)
+        public async Task<IActionResult> GetDetails([FromRoute]int? locationId, CancellationToken cancellationToken)
         {
             if (locationId == null)
                 return NotFound();
 
-            var location = await this._locationRepos.Details((int)locationId);
+            var location = await this._locationRepos.Details((int)locationId, cancellationToken);
             if (location == null)
                 return NotFound();
 
@@ -93,14 +97,15 @@ namespace CloudBnB.API.Controllers
         /// Returns a list of all unavailable dates for a specific location
         /// </summary>
         /// <param name="locationId">Id of location to check</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpGet]
         [Route("UnAvailableDates/{locationId:int}")]
-        public async Task<IActionResult> UnavailableDates([FromRoute]int? locationId)
+        public async Task<IActionResult> UnavailableDates([FromRoute]int? locationId, CancellationToken cancellationToken)
         {
             if (locationId == null)
                 return NotFound();
 
-            var unavailableDates = await this._locationRepos.UnavailableDates((int)locationId);
+            var unavailableDates = await this._locationRepos.UnavailableDates((int)locationId, cancellationToken);
 
             return Ok(new UnavailableDatesDto
             {
@@ -113,18 +118,19 @@ namespace CloudBnB.API.Controllers
         /// </summary>
         /// <param name="image">Image to be uploaded</param>
         /// <param name="locationId">Location to link the image to</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpPost]
         [Route("Upload")]
-        public async Task<IActionResult> Upload(IFormFile image, int locationId)
+        public async Task<IActionResult> Upload(IFormFile image, int locationId, CancellationToken cancellationToken)
         {
             if (image == null)
                 return BadRequest("Missing fields.");
 
-            string? uri = await _imageService.Upload(image);
+            string? uri = await _imageService.Upload(image, cancellationToken);
             if (uri == null)
                 return BadRequest("Could not upload image");
 
-            await _locationRepos.AddImage(locationId, uri);
+            await _locationRepos.AddImage(locationId, uri, cancellationToken);
             return Ok(uri);
         }
     }

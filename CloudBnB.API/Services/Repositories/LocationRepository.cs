@@ -13,23 +13,23 @@ namespace CloudBnB.API.Services.Repositories
         {
         }
 
-        public override async Task<List<Location>> GetAll()
+        public override async Task<List<Location>> GetAll(CancellationToken cancellationToken)
         {
             return await this._context.Locations
                 .Include(location => location.Landlord)
                     .ThenInclude(landlord => landlord.Avatar)
                 .Include(location => location.LocationImages)
                     .ThenInclude(locationImage => locationImage.Image)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
-        public virtual async Task<double> GetMaxPrice()
+        public virtual async Task<double> GetMaxPrice(CancellationToken cancellationToken)
         {
-            var price = await this._context.Locations.MaxAsync(location => location.PricePerDay);
+            var price = await this._context.Locations.MaxAsync(location => location.PricePerDay, cancellationToken);
             return double.Round(price, 2);
         }
 
-        public virtual async Task AddImage(int locationId, string uri)
+        public virtual async Task AddImage(int locationId, string uri, CancellationToken cancellationToken)
         {
             // Save image.
             var image = this._context.Images.Add(new Image
@@ -45,17 +45,17 @@ namespace CloudBnB.API.Services.Repositories
                 LocationId = locationId
             });
 
-            await this._context.SaveChangesAsync();
+            await this._context.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task<Location?> Details(int locationId)
+        public virtual async Task<Location?> Details(int locationId, CancellationToken cancellationToken)
         {
             var location = await this._context.Locations
                 .Include(location => location.LocationImages)
                     .ThenInclude(locationImage => locationImage.Image)
                 .Include(location => location.Landlord)
                     .ThenInclude(landlord => landlord.Avatar)
-                .SingleOrDefaultAsync(location => location.Id == locationId);
+                .SingleOrDefaultAsync(location => location.Id == locationId, cancellationToken);
 
             if (location == null)
                 return null;
@@ -63,11 +63,11 @@ namespace CloudBnB.API.Services.Repositories
             return location;
         }
 
-        public virtual async Task<List<DateTime>> UnavailableDates(int locationId)
+        public virtual async Task<List<DateTime>> UnavailableDates(int locationId, CancellationToken cancellationToken)
         {
             var reservations = await _context.Reservations
                 .Where(reservation => reservation.LocationId == locationId)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             List<DateTime> unavailableDates = [];
 

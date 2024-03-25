@@ -16,42 +16,42 @@ namespace CloudBnB.API.Repositories
             this._set = this._context.Set<T>();
         }
 
-        public virtual async Task<T?> GetById(int id)
+        public virtual async Task<T?> GetById(int id, CancellationToken cancellationToken)
         {
-            var entity = await this._set.FindAsync(id);
+            var entity = await this._set.FindAsync(id, cancellationToken);
             return entity;
         }
 
-        public virtual async Task<List<T>> GetAll()
+        public virtual async Task<List<T>> GetAll(CancellationToken cancellationToken)
         {
-            var entities = await this._set.ToListAsync();
+            var entities = await this._set.ToListAsync(cancellationToken);
             return entities;
         }
 
-        public virtual async Task<T> Create(T entity)
+        public virtual async Task<T> Create(T entity, CancellationToken cancellationToken)
         {
             this._set.Add(entity);
-            await this._context.SaveChangesAsync();
+            await this._context.SaveChangesAsync(cancellationToken);
 
             return entity;
         }
 
-        public virtual async Task<T> Update(T entity)
+        public virtual async Task<T> Update(T entity, CancellationToken cancellationToken)
         {
             this._set.Update(entity);
-            await this._context.SaveChangesAsync();
+            await this._context.SaveChangesAsync(cancellationToken);
 
             return entity;
         }
 
-        public virtual async Task<bool> Delete(int id)
+        public virtual async Task<bool> Delete(int id, CancellationToken cancellationToken)
         {
-            var entity = await this.GetById(id);
+            var entity = await this.GetById(id, cancellationToken);
             if (entity == null)
                 return false;
 
             this._set.Remove(entity);
-            int changed = await this._context.SaveChangesAsync();
+            int changed = await this._context.SaveChangesAsync(cancellationToken);
 
             return changed == 1;
         }

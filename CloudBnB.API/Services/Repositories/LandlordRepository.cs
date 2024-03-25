@@ -12,11 +12,11 @@ namespace CloudBnB.API.Services.Repositories
         {
         }
 
-        public override async Task<List<Landlord>> GetAll()
+        public override async Task<List<Landlord>> GetAll(CancellationToken cancellationToken)
         {
             return await this._context.Landlords
                 .Include(landlord => landlord.Avatar)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
     }
 }

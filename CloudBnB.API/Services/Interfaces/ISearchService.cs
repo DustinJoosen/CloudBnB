@@ -9,7 +9,8 @@ namespace CloudBnB.API.Services.Interfaces
         /// Searches for the locations.
         /// </summary>
         /// <param name="search">Criteria to apply</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         /// <returns>A list of locations that match the criteria.</returns>
-        public Task<List<Location>> Search(SearchDto search);
+        public Task<List<Location>> Search(SearchDto search, CancellationToken cancellationToken);
     }
 }

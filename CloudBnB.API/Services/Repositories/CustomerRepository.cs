@@ -18,11 +18,12 @@ namespace CloudBnB.API.Services.Repositories
         /// <param name="email">Email to check existence of</param>
         /// <param name="firstName">Firstname of the user in case of create</param>
         /// <param name="lastName">Lastname of the user in case of create</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         /// <returns>The customer object</returns>
-        public async Task<Customer> FetchOrCreate(string email, string firstName, string lastName)
+        public async Task<Customer> FetchOrCreate(string email, string firstName, string lastName, CancellationToken cancellationToken)
         {
             // 'Fetch'. Checks if the customer exists. If it does, it gets returned.
-            var customer = await this._context.Customers.SingleOrDefaultAsync(customer => customer.Email == email);
+            var customer = await this._context.Customers.SingleOrDefaultAsync(customer => customer.Email == email, cancellationToken);
             if (customer != null)
                 return customer;
 
@@ -34,7 +35,7 @@ namespace CloudBnB.API.Services.Repositories
                 LastName = lastName
             }).Entity;
 
-            await this._context.SaveChangesAsync();
+            await this._context.SaveChangesAsync(cancellationToken);
             return newCustomer;
         }
     }

@@ -26,12 +26,13 @@ namespace CloudBnB.API.Controllers
         /// <summary>
         /// Returns a list of all landlords.
         /// </summary>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpGet]
         [Route("")]
         [Route("GetAll")]
-        public async Task<IActionResult> GetLandlords()
+        public async Task<IActionResult> GetLandlords(CancellationToken cancellationToken)
         {
-            var landlords = await _landlordRepos.GetAll();
+            var landlords = await _landlordRepos.GetAll(cancellationToken);
             return Ok(landlords);
         }
     }

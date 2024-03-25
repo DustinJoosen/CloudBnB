@@ -6,6 +6,7 @@ namespace CloudBnB.API.SwaggerGen
 {
     /// <summary>
     /// Adds ?api-version=2.0 to any controller annotated with the v2 groupname.
+    /// Worked together with Jasper for this.
     /// </summary>
     public class AddVersionQueryParamOperationFilter : IOperationFilter
     {
@@ -25,6 +26,7 @@ namespace CloudBnB.API.SwaggerGen
                 Name = "api-version",
                 In = ParameterLocation.Query,
                 Required = true,
+                Description = "API version. Keep it at 2.0",
                 Schema = new OpenApiSchema { Type = "string" },
                 Example = new OpenApiString("2.0")
             });

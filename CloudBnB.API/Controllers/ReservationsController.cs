@@ -21,20 +21,22 @@ namespace CloudBnB.API.Controllers
         /// Creates a reservation
         /// </summary>
         /// <param name="reservationCreation">Reservation to create</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> Reserve([FromBody] ReservationCreationDto reservationCreation)
+        public async Task<IActionResult> Reserve([FromBody] ReservationCreationDto reservationCreation, CancellationToken cancellationToken)
         {
             if (!await this._reservationService.PeriodOfTimeFree(
                 locationId: reservationCreation.LocationId, 
                 startDate: reservationCreation.StartDate, 
-                endDate: reservationCreation.EndDate))
+                endDate: reservationCreation.EndDate,
+                cancellationToken: cancellationToken))
             {
                 return Conflict("This location is already reserved for this period");
             }
 
-            var reservation = await this._reservationService.Reserve(reservationCreation);
-            var creationInfo = await this._reservationService.GetCreationInfo(reservation);
+            var reservation = await this._reservationService.Reserve(reservationCreation, cancellationToken);
+            var creationInfo = await this._reservationService.GetCreationInfo(reservation, cancellationToken);
 
             return Ok(creationInfo);
         }

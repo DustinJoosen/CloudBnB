@@ -14,7 +14,6 @@ namespace CloudBnB.API.SwaggerGen
         {
             services.AddSwaggerGen(options =>
             {
-                options.ResolveConflictingActions(apiDesc => apiDesc.First());
                 options.OperationFilter<AddVersionQueryParamOperationFilter>();
 
                 options.SwaggerDoc("v1", new OpenApiInfo

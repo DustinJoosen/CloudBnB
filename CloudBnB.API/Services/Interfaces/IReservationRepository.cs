@@ -9,7 +9,8 @@ namespace CloudBnB.API.Services.Interfaces
         /// Returns all reservations that match a specific location.
         /// </summary>
         /// <param name="locationId">LocationId to check</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         /// <returns>List of reservations</returns>
-        public Task<List<Reservation>> GetByLocation(int locationId);
+        public Task<List<Reservation>> GetByLocation(int locationId, CancellationToken cancellationToken);
     }
 }

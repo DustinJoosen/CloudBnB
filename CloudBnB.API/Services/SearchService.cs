@@ -15,14 +15,14 @@ namespace CloudBnB.API.Services
             this._context = context;
         }
 
-        public virtual async Task<List<Location>> Search(SearchDto search)
+        public virtual async Task<List<Location>> Search(SearchDto search, CancellationToken cancellationToken)
         {
             var locations = await this._context.Locations
                 .Include(location => location.Landlord)
                     .ThenInclude(landlord => landlord.Avatar)
                 .Include(location => location.LocationImages)
                     .ThenInclude(locationImage => locationImage.Image)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             if (search.MinPrice != null)
                 locations = locations.Where(location => location.PricePerDay >= search.MinPrice).ToList();
@@ -38,7 +38,6 @@ namespace CloudBnB.API.Services
 
             if (search.Features != null)
                 locations = locations.Where(location => location.Features >= search.Features).ToList();
-
 
             return locations;
         }

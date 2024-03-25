@@ -21,13 +21,14 @@ namespace CloudBnB.API.Services
             this._locationRepository = locationRepository;
         }
 
-        public async Task<Reservation> Reserve(ReservationCreationDto reservationCreationDto)
+        public async Task<Reservation> Reserve(ReservationCreationDto reservationCreationDto, CancellationToken cancellationToken)
         {
             // Step 1: Find or Create a customer
             var customer = await this._customerRepository.FetchOrCreate(
                 email: reservationCreationDto.Email,
                 firstName: reservationCreationDto.FirstName,
-                lastName: reservationCreationDto.LastName);
+                lastName: reservationCreationDto.LastName,
+                cancellationToken: cancellationToken);
 
             // Step 2: Create the reservation
             return await this._reservationRepository.Create(new Reservation
@@ -37,13 +38,13 @@ namespace CloudBnB.API.Services
                 StartDate = reservationCreationDto.StartDate,
                 EndDate = reservationCreationDto.EndDate,
                 Discount = reservationCreationDto.Discount ?? 0,
-            });
+            }, cancellationToken);
         }
 
-        public async Task<ReservationSuccessfullCreationDto> GetCreationInfo(Reservation reservation)
+        public async Task<ReservationSuccessfullCreationDto> GetCreationInfo(Reservation reservation, CancellationToken cancellationToken)
         {
-            var location = await this._locationRepository.GetById(reservation.LocationId);
-            var customer = await this._customerRepository.GetById(reservation.CustomerId);
+            var location = await this._locationRepository.GetById(reservation.LocationId, cancellationToken);
+            var customer = await this._customerRepository.GetById(reservation.CustomerId, cancellationToken);
 
             var totalDays = (reservation.EndDate - reservation.StartDate).Days;
 
@@ -56,9 +57,9 @@ namespace CloudBnB.API.Services
             };
         }
 
-        public async Task<bool> PeriodOfTimeFree(int locationId, DateTime startDate, DateTime endDate)
+        public async Task<bool> PeriodOfTimeFree(int locationId, DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
         {
-            var reservations = await this._reservationRepository.GetByLocation(locationId);
+            var reservations = await this._reservationRepository.GetByLocation(locationId, cancellationToken);
             foreach (var reservation in reservations)
             {
                 // If the reservation starts in the range of the requested period.

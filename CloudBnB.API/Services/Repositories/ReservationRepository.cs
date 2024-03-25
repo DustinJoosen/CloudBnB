@@ -14,11 +14,11 @@ namespace CloudBnB.API.Services.Repositories
         {
         }
 
-        public async Task<List<Reservation>> GetByLocation(int locationId)
+        public async Task<List<Reservation>> GetByLocation(int locationId, CancellationToken cancellationToken)
         {
             return await this._context.Reservations
                 .Where(reservation => reservation.LocationId == locationId)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
     }
 }

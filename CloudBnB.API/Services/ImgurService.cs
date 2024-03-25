@@ -19,8 +19,9 @@ namespace CloudBnB.API.Services
         /// Uploads a formfile to imgur
         /// </summary>
         /// <param name="file">File to upload</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
         /// <returns>Uri of upload image</returns>
-        public async Task<string?> Upload(IFormFile file)
+        public async Task<string?> Upload(IFormFile file, CancellationToken cancellationToken)
         {
             string clientId = _configuration["ImgurClientId"] ?? throw new KeyNotFoundException("Could not find imgur client id");
 
@@ -28,7 +29,7 @@ namespace CloudBnB.API.Services
             byte[] imageData;
             using (var memoryStream = new MemoryStream())
             {
-                await file.CopyToAsync(memoryStream);
+                await file.CopyToAsync(memoryStream, cancellationToken);
                 imageData = memoryStream.ToArray();
             }
 
@@ -43,12 +44,12 @@ namespace CloudBnB.API.Services
                     { new ByteArrayContent(imageData), "image", "image.jpg" }
                 };
 
-                var response = await client.PostAsync("https://api.imgur.com/3/image", formData);
+                var response = await client.PostAsync("https://api.imgur.com/3/image", formData, cancellationToken);
                 if (!response.IsSuccessStatusCode)
                     return null;
 
                 // Get the url from the response
-                var content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync(cancellationToken);
                 return this.FilterUrlOut(content);
             }
         }
