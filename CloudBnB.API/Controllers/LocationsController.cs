@@ -29,10 +29,10 @@ namespace CloudBnB.API.Controllers
         public LocationsController(ILocationRepository locationRepos,
             ISearchService searchService, IImageService imageService, IMapper mapper)
         {
-            _locationRepos = locationRepos;
-            _searchService = searchService;
-            _imageService = imageService;
-            _mapper = mapper;
+            this._locationRepos = locationRepos;
+            this._searchService = searchService;
+            this._imageService = imageService;
+            this._mapper = mapper;
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace CloudBnB.API.Controllers
         [Route("GetAll")]
         public async Task<IActionResult> GetLocations(CancellationToken cancellationToken)
         {
-            var locations = await _locationRepos.GetAll(cancellationToken);
-            return Ok(_mapper.Map<List<LocationDto>>(locations));
+            var locations = await this._locationRepos.GetAll(cancellationToken);
+            return Ok(this._mapper.Map<List<LocationDto>>(locations));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace CloudBnB.API.Controllers
         [Route("GetMaxPrice")]
         public async Task<IActionResult> GetMaxPrice(CancellationToken cancellationToken)
         {
-            var maxPrice = await _locationRepos.GetMaxPrice(cancellationToken);
+            var maxPrice = await this._locationRepos.GetMaxPrice(cancellationToken);
             return Ok(new MaxPriceDto { Price = maxPrice });
         }
 
@@ -67,10 +67,10 @@ namespace CloudBnB.API.Controllers
         /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpPost]
         [Route("Search")]
-        public async Task<IActionResult> Search([FromBody] SearchDto search, CancellationToken cancellationToken)
+        public async Task<IActionResult> Search([FromBody]SearchDto search, CancellationToken cancellationToken)
         {
-            var locations = await _searchService.Search(search, cancellationToken);
-            return Ok(_mapper.Map<List<ExpandedLocationDto>>(locations));
+            var locations = await this._searchService.Search(search, cancellationToken);
+            return Ok(this._mapper.Map<List<ExpandedLocationDto>>(locations));
         }
 
         /// <summary>
@@ -89,12 +89,12 @@ namespace CloudBnB.API.Controllers
             if (location == null)
                 return NotFound();
 
-            return Ok(_mapper.Map<DetailedLocationDto>(location));
+            return Ok(this._mapper.Map<DetailedLocationDto>(location));
             
         }
 
         /// <summary>
-        /// Returns a list of all unavailable dates for a specific location
+        /// Returns a list of all unavailable dates for a specific location.
         /// </summary>
         /// <param name="locationId">Id of location to check</param>
         /// <param name="cancellationToken">Token to cancel execution</param>
@@ -126,11 +126,11 @@ namespace CloudBnB.API.Controllers
             if (image == null)
                 return BadRequest("Missing fields.");
 
-            string? uri = await _imageService.Upload(image, cancellationToken);
+            string? uri = await this._imageService.Upload(image, cancellationToken);
             if (uri == null)
                 return BadRequest("Could not upload image");
 
-            await _locationRepos.AddImage(locationId, uri, cancellationToken);
+            await this._locationRepos.AddImage(locationId, uri, cancellationToken);
             return Ok(uri);
         }
     }

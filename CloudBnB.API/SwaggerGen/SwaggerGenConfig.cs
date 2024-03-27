@@ -6,7 +6,7 @@ using System.Reflection;
 namespace CloudBnB.API.SwaggerGen
 {
     /// <summary>
-    /// Add all swagger information
+    /// Add all swagger information.
     /// </summary>
     public static class SwaggerGenConfig
     {
@@ -42,7 +42,6 @@ namespace CloudBnB.API.SwaggerGen
 
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-
             });
 
             return services;

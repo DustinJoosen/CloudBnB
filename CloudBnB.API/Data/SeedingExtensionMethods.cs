@@ -8,7 +8,7 @@ namespace CloudBnB.API.Data
     public static class SeedingExtensionMethods
     {
         /// <summary>
-        /// Generates 100 customers
+        /// Generates 100 customers.
         /// </summary>
         /// <returns>The modelbuilder self, to allow method-chaining</returns>
         public static ModelBuilder GenerateCustomers(this ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace CloudBnB.API.Data
         }
 
         /// <summary>
-        /// Generates 100 images, both avatar's and location images
+        /// Generates 100 images, both avatar's and location images.
         /// </summary>
         /// <returns>The modelbuilder self, to allow method-chaining</returns>
         public static ModelBuilder GenerateImages(this ModelBuilder modelBuilder)
@@ -48,7 +48,7 @@ namespace CloudBnB.API.Data
         }
 
         /// <summary>
-        /// Generates 40 Location Images
+        /// Generates 40 Location Images.
         /// </summary>
         /// <returns>The modelbuilder self, to allow method-chaining</returns>
         public static ModelBuilder GenerateLocationImages(this ModelBuilder modelBuilder)
@@ -62,7 +62,7 @@ namespace CloudBnB.API.Data
         }
 
         /// <summary>
-        /// Generates 20 landlords
+        /// Generates 20 landlords.
         /// </summary>
         /// <returns>The modelbuilder self, to allow method-chaining</returns>
         public static ModelBuilder GenerateLandlords(this ModelBuilder modelBuilder)
@@ -78,9 +78,8 @@ namespace CloudBnB.API.Data
             return modelBuilder;
         }
 
-
         /// <summary>
-        /// Generates 40 locations
+        /// Generates 40 locations.
         /// </summary>
         /// <returns>The modelbuilder self, to allow method-chaining</returns>
         public static ModelBuilder GenerateLocations(this ModelBuilder modelBuilder)
@@ -102,7 +101,7 @@ namespace CloudBnB.API.Data
         }
 
         /// <summary>
-        /// Generates 120 reservations
+        /// Generates 120 reservations.
         /// </summary>
         /// <returns>The modelbuilder self, to allow method-chaining</returns>
         public static ModelBuilder GenerateReservations(this ModelBuilder modelBuilder)

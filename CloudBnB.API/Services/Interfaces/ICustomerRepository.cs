@@ -5,7 +5,7 @@ namespace CloudBnB.API.Services.Interfaces
     public interface ICustomerRepository : ICrudRepository<Customer>
     {
         /// <summary>
-        /// If the customer exists, it gets returned. Otherwise it gets created
+        /// If the customer exists, it gets returned. Otherwise it gets created.
         /// </summary>
         /// <param name="email">Email to check existence of</param>
         /// <param name="firstName">Firstname of the user in case of create</param>

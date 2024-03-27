@@ -21,7 +21,7 @@ namespace CloudBnB.API.Services
             this._locationRepository = locationRepository;
         }
 
-        public async Task<Reservation> Reserve(ReservationCreationDto reservationCreationDto, CancellationToken cancellationToken)
+        public async Task<ReservationSuccessfullCreationDto> Reserve(ReservationCreationDto reservationCreationDto, CancellationToken cancellationToken)
         {
             // Step 1: Find or Create a customer
             var customer = await this._customerRepository.FetchOrCreate(
@@ -31,7 +31,7 @@ namespace CloudBnB.API.Services
                 cancellationToken: cancellationToken);
 
             // Step 2: Create the reservation
-            return await this._reservationRepository.Create(new Reservation
+            var reservation = await this._reservationRepository.Create(new Reservation
             {
                 CustomerId = customer.Id,
                 LocationId = reservationCreationDto.LocationId,
@@ -39,9 +39,11 @@ namespace CloudBnB.API.Services
                 EndDate = reservationCreationDto.EndDate,
                 Discount = reservationCreationDto.Discount ?? 0,
             }, cancellationToken);
+
+            return await this.GetCreationInfo(reservation, cancellationToken);
         }
 
-        public async Task<ReservationSuccessfullCreationDto> GetCreationInfo(Reservation reservation, CancellationToken cancellationToken)
+        private async Task<ReservationSuccessfullCreationDto> GetCreationInfo(Reservation reservation, CancellationToken cancellationToken)
         {
             var location = await this._locationRepository.GetById(reservation.LocationId, cancellationToken);
             var customer = await this._customerRepository.GetById(reservation.CustomerId, cancellationToken);
@@ -69,7 +71,7 @@ namespace CloudBnB.API.Services
                     return false;
                 }
 
-                // If the requested period completely falls into the period of the reservation
+                // If the requested period completely falls into the period of the reservation.
                 if (startDate >= reservation.StartDate && endDate <= reservation.EndDate)
                 {
                     return false;

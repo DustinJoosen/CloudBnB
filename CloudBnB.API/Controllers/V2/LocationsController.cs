@@ -26,8 +26,8 @@ namespace CloudBnB.API.Controllers.V2
 
         public LocationsController(ILocationRepository locationRepos, IMapper mapper)
         {
-            _locationRepos = locationRepos;
-            _mapper = mapper;
+            this._locationRepos = locationRepos;
+            this._mapper = mapper;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace CloudBnB.API.Controllers.V2
         public async Task<IActionResult> GetLocations(CancellationToken cancellationToken)
         {
             var locations = await this._locationRepos.GetAll(cancellationToken);
-            return Ok(_mapper.Map<List<ExpandedLocationDto>>(locations));
+            return Ok(this._mapper.Map<List<ExpandedLocationDto>>(locations));
         }
     }
 }

@@ -17,7 +17,7 @@ namespace CloudBnB.API.SwaggerGen
             if (groupName != "v2")
                 return;
 
-            if (operation.Parameters.Any(parameter => parameter.Name == "api-verison"))
+            if (operation.Parameters.Any(parameter => parameter.Name == "api-version"))
                 return;
 
             operation.Parameters ??= [];

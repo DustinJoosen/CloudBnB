@@ -2818,19 +2818,6 @@ namespace CloudBnB.API.Migrations
                 table: "Images",
                 keyColumn: "Id",
                 keyValue: 20);
-
-            migrationBuilder.DropColumn(
-                name: "Features",
-                table: "Locations");
-
-            migrationBuilder.AlterColumn<double>(
-                name: "PricePerDay",
-                table: "Locations",
-                type: "float(2)",
-                precision: 2,
-                nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(10,2)");
         }
     }
 }

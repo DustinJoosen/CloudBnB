@@ -33,7 +33,6 @@ namespace CloudBnB.API.Data
                     li.ImageId
                 });
 
-
             // Use the seeding extension methods.
             modelBuilder
                 .GenerateCustomers()

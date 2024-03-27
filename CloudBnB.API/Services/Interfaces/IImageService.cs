@@ -3,7 +3,7 @@
     public interface IImageService
     {
         /// <summary>
-        /// Uploads a formfile to an external image hosting service
+        /// Uploads a formfile to an external image hosting service.
         /// </summary>
         /// <param name="file">File to upload</param>
         /// <param name="cancellationToken">Token to cancel execution</param>

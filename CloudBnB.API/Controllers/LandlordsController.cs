@@ -20,7 +20,7 @@ namespace CloudBnB.API.Controllers
 
         public LandlordsController(ILandlordRepository landlordRepos)
         {
-            _landlordRepos = landlordRepos;
+            this._landlordRepos = landlordRepos;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace CloudBnB.API.Controllers
         [Route("GetAll")]
         public async Task<IActionResult> GetLandlords(CancellationToken cancellationToken)
         {
-            var landlords = await _landlordRepos.GetAll(cancellationToken);
+            var landlords = await this._landlordRepos.GetAll(cancellationToken);
             return Ok(landlords);
         }
     }

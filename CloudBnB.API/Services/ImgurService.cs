@@ -7,16 +7,14 @@ namespace CloudBnB.API.Services
 {
     public class ImgurService : IImageService
     {
-        private IImageRepository _imageRepos;
         private IConfiguration _configuration;
-        public ImgurService(IImageRepository imageRepos, IConfiguration configuration)
+        public ImgurService(IConfiguration configuration)
         {
-            _imageRepos = imageRepos;
             _configuration = configuration;
         }
 
         /// <summary>
-        /// Uploads a formfile to imgur
+        /// Uploads a formfile to imgur.
         /// </summary>
         /// <param name="file">File to upload</param>
         /// <param name="cancellationToken">Token to cancel execution</param>
@@ -48,12 +46,11 @@ namespace CloudBnB.API.Services
                 if (!response.IsSuccessStatusCode)
                     return null;
 
-                // Get the url from the response
+                // Get the url from the response.
                 var content = await response.Content.ReadAsStringAsync(cancellationToken);
                 return this.FilterUrlOut(content);
             }
         }
-
 
         private string? FilterUrlOut(string json)
         {
