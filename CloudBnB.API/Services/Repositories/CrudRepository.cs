@@ -55,5 +55,10 @@ namespace CloudBnB.API.Repositories
 
             return changed == 1;
         }
+
+        public virtual async Task<bool> Exists(int id, CancellationToken cancellationToken)
+        {
+            return await this._set.AnyAsync(entity => entity.Id == id, cancellationToken);
+        }
     }
 }

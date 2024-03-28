@@ -1,37 +1,70 @@
-@CloudBnB.API_HostAddress = http://localhost:5252
+@CloudBnB.API_HostAddress = https://localhost:7279
 
 
 ### Landlords
-GET {{CloudBnB.API_HostAddress}}/api/Landlords/GetAll/
+GET {{CloudBnB.API_HostAddress}}/api/Landlords
 Accept: application/json
 
 
 ### Locations
-GET {{CloudBnB.API_HostAddress}}/api/Locations/GetAll
+GET {{CloudBnB.API_HostAddress}}/api/Locations
+Accept: application/json
+
+### Locations V2
+GET {{CloudBnB.API_HostAddress}}/api/Locations/?api-version=2.0
 Accept: application/json
 
 ### Locations/GetMaxPrice
-GET https://localhost:7279/api/Locations/GetMaxPrice
+GET {{CloudBnB.API_HostAddress}}/api/Locations/GetMaxPrice
 Accept: */*
 
 ### Locations/GetDetails/1
-GET https://localhost:7279/api/Locations/GetDetails/1
+GET {{CloudBnB.API_HostAddress}}/api/Locations/GetDetails/1
 Accept: */*
 
 ### Locations/UnAvailableDates/1
-GET https://localhost:7279/api/Locations/UnAvailableDates/1
+GET {{CloudBnB.API_HostAddress}}/api/Locations/UnAvailableDates/1
 Accept: */*
 
 ### Locations/Search
-POST https://localhost:7279/api/Locations/Search
+POST {{CloudBnB.API_HostAddress}}/api/Locations/Search
 Accept: */*
 Content-Type: application/json
 
 {
   "features": null,
-  "type": null,
+  "type": 1,
   "rooms": 5,
-  "minPrice": null,
+  "minPrice": 400,
   "maxPrice": 1000
+}
+
+### Locations/Upload
+POST {{CloudBnB.API_HostAddress}}/api/Locations/Search
+Accept: */*
+Content-Type: application/json
+
+{
+  "features": null,
+  "type": 1,
+  "rooms": 5,
+  "minPrice": 400,
+  "maxPrice": 1000
+}
+
+
+### Reservations
+POST {{CloudBnB.API_HostAddress}}/api/Reservations
+Accept: */*
+Content-Type: application/json
+
+{
+  "startDate": "2024-06-21T00:00:00.000Z",
+  "endDate": "2024-06-28T00:00:00.000Z",
+  "locationId": 1,
+  "discount": 5,
+  "email": "s1184503@student.windesheim.nl",
+  "firstName": "Dustin",
+  "lastName": "Joosen"
 }
 

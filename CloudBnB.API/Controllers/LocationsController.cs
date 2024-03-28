@@ -105,6 +105,10 @@ namespace CloudBnB.API.Controllers
             if (locationId == null)
                 return NotFound();
 
+            var locationExists = await this._locationRepos.Exists((int)locationId, cancellationToken);
+            if (!locationExists)
+                return NotFound();
+
             var unavailableDates = await this._locationRepos.UnavailableDates((int)locationId, cancellationToken);
 
             return Ok(new UnavailableDatesDto
@@ -121,16 +125,20 @@ namespace CloudBnB.API.Controllers
         /// <param name="cancellationToken">Token to cancel execution</param>
         [HttpPost]
         [Route("Upload")]
-        public async Task<IActionResult> Upload(IFormFile image, int locationId, CancellationToken cancellationToken)
+        public async Task<IActionResult> Upload(IFormFile image, int? locationId, CancellationToken cancellationToken)
         {
-            if (image == null)
+            if (locationId == null || image == null)
                 return BadRequest("Missing fields.");
+
+            var locationExists = await this._locationRepos.Exists((int)locationId, cancellationToken);
+            if (!locationExists)
+                return NotFound();
 
             string? uri = await this._imageService.Upload(image, cancellationToken);
             if (uri == null)
                 return BadRequest("Could not upload image");
 
-            await this._locationRepos.AddImage(locationId, uri, cancellationToken);
+            await this._locationRepos.AddImage((int)locationId, uri, cancellationToken);
             return Ok(uri);
         }
     }

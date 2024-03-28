@@ -40,5 +40,13 @@
         /// <param name="cancellationToken">Token to cancel execution</param>
         /// <returns>Boolean determining success</returns>
         public Task<bool> Delete(int id, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Checks wether an entity exists.
+        /// </summary>
+        /// <param name="id">Id to check the entity of</param>
+        /// <param name="cancellationToken">Token to cancel execution</param>
+        /// <returns></returns>
+        public Task<bool> Exists(int id, CancellationToken cancellationToken);
     }
 }
