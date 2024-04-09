@@ -46,7 +46,7 @@
         /// </summary>
         /// <param name="id">Id to check the entity of</param>
         /// <param name="cancellationToken">Token to cancel execution</param>
-        /// <returns></returns>
+        /// <returns>Boolean determining success</returns>
         public Task<bool> Exists(int id, CancellationToken cancellationToken);
     }
 }

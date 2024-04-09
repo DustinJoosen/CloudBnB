@@ -39,19 +39,6 @@ Content-Type: application/json
   "maxPrice": 1000
 }
 
-### Locations/Upload
-POST {{CloudBnB.API_HostAddress}}/api/Locations/Search
-Accept: */*
-Content-Type: application/json
-
-{
-  "features": null,
-  "type": 1,
-  "rooms": 5,
-  "minPrice": 400,
-  "maxPrice": 1000
-}
-
 
 ### Reservations
 POST {{CloudBnB.API_HostAddress}}/api/Reservations
