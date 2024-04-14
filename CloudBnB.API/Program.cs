@@ -1,3 +1,9 @@
+/*
+ * Dustin Joosen
+ * S1184503@student.windesheim.nl
+ * WFHBOICT.CSharp2.22
+ */
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using CloudBnB.API.Data;
